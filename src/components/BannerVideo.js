@@ -7,10 +7,11 @@ function BannerVideo() {
     <div className="BannerVideo w-full h-screen overflow-hidden relative bg-texture">
       <div className="absolute h-screen w-full left-1/2">
         <video
-          className="absolute translateX--1/2 h-screen max-w-none min-w-screen -z-1 bg-black min-w-full min-h-screen"
+          className="absolute translateX--1/2 h-screen max-w-none min-w-screen -z-1 bg-black min-w-full min-h-screen blur"
           autoPlay
           loop
           muted
+          style={{ filter: "blur(15px)" }}
         >
           <source src={video_webm} type="video/webm" />
           <source src={video} type="video/mp4" />
