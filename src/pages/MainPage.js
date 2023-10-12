@@ -1,32 +1,70 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import BannerVideo from "../components/BannerVideo";
 import ThreeColumns from "../components/ThreeColumns";
 import TwoColumns from "../components/TwoColumns";
 import Card from "../components/Card";
 import Meta from "../components/Meta";
-import main1 from "../assets/main1.webp";
-import main2 from "../assets/main2.webp";
-import main3 from "../assets/main3.webp";
-import main_items from "../assets/main-items.webp";
-import main_parts from "../assets/main-parts.webp";
-import main_styles from "../assets/main-styles.webp";
+import main1 from "../assets/main1.jpg";
+import main2 from "../assets/main2.jpg";
+import main3 from "../assets/main3.jpg";
+import main1_webp from "../assets/main1.webp";
+import main2_webp from "../assets/main2.webp";
+import main3_webp from "../assets/main3.webp";
+import main_items from "../assets/main-items.jpg";
+import main_parts from "../assets/main-parts.jpg";
+import main_styles from "../assets/main-styles.jpg";
+import main_items_webp from "../assets/main-items.webp";
+import main_parts_webp from "../assets/main-parts.webp";
+import main_styles_webp from "../assets/main-styles.webp";
 
 function MainPage(props) {
+  const imgEl1 = useRef(null);
+  const imgEl2 = useRef(null);
+  const imgEl3 = useRef(null);
+
+  useEffect(() => {
+    const options = {};
+    const callback = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sourceEl = entry.target.previousSibling;
+          sourceEl.srcset = sourceEl.dataset.srcset;
+          entry.target.src = entry.target.dataset.src;
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    let observer = new IntersectionObserver(callback, options);
+    observer.observe(imgEl1.current);
+    observer.observe(imgEl2.current);
+    observer.observe(imgEl3.current);
+  });
+
   return (
     <div className="MainPage -mt-16">
       <BannerVideo />
       <div className="mx-auto">
         <ThreeColumns
           columns={[
-            <Card image={main1}>롱보드는 아주 재밌습니다.</Card>,
-            <Card image={main2}>롱보드를 타면 아주 신납니다.</Card>,
-            <Card image={main3}>롱보드는 굉장히 재밌습니다.</Card>,
+            <Card image={main1} webp={main1_webp}>
+              롱보드는 아주 재밌습니다.
+            </Card>,
+            <Card image={main2} webp={main2_webp}>
+              롱보드를 타면 아주 신납니다.
+            </Card>,
+            <Card image={main3} webp={main3_webp}>
+              롱보드는 굉장히 재밌습니다.
+            </Card>,
           ]}
         />
         <TwoColumns
           bgColor={"#f4f4f4"}
           columns={[
-            <img src={main_items} />,
+            <picture>
+              <source data-srcset={main_items_webp} type="image/webp" />
+              <img data-src={main_items} ref={imgEl1} alt="" />
+            </picture>,
             <Meta
               title={"Items"}
               content={
@@ -46,14 +84,20 @@ function MainPage(props) {
               }
               btnLink={"/part"}
             />,
-            <img src={main_parts} />,
+            <picture>
+              <source data-srcset={main_parts_webp} type="image/webp" />
+              <img data-src={main_parts} ref={imgEl2} alt="" />
+            </picture>,
           ]}
           mobileReverse={true}
         />
         <TwoColumns
           bgColor={"#f4f4f4"}
           columns={[
-            <img src={main_styles} />,
+            <picture>
+              <source data-srcset={main_styles_webp} type="image/webp" />
+              <img data-src={main_styles} ref={imgEl3} alt="" />
+            </picture>,
             <Meta
               title={"Riding Styles"}
               content={
